@@ -39,3 +39,11 @@ def add_following(con, user_address: str, following_address: str):
         cursor = con.cursor()
         cursor.execute(query, (user_address, following_address))
     pass
+
+
+def add_comment():
+    pass
+
+
+def get_comments(tx_hash):
+    pass

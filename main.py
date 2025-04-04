@@ -32,8 +32,7 @@ def get_profile(wallet: str) -> Profile:
 
 @app.post("/signUp/")
 def sign_up(wallet: str, description: str):
-    profile = Profile(wallet)
-    profile.new(description)
+    Profile(wallet).new(description)
 
 
 @app.get("/communities")

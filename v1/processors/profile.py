@@ -21,7 +21,7 @@ class Profile:
 
         # Create an empty array for followers for the user
         con = get_connection()
-        self.followers = get_followers(con, address)
+        self.followers = get_followers(con, self.address)
 
         # Create an empty array for profiles the user follows
         self.following = []

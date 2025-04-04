@@ -1,5 +1,5 @@
 import sqlite3
-# from db_setup import get_connection
+from db_setup import get_connection
 
 
 def get_followings(con, address: str):
@@ -14,3 +14,14 @@ def get_followings(con, address: str):
         for result in results:
             clean_results.append(result[0])
         return clean_results
+
+
+def add_following(con, user_address: str, following_address: str):
+    query = """
+        INSERT INTO followings(user_address, following_address) VALUES
+        (?, ?);
+    """
+    with con:
+        cursor = con.cursor()
+        cursor.execute(query, (user_address, following_address))
+    pass

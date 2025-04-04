@@ -1,11 +1,14 @@
+from db import get_connection, get_followers, get_followings
+
+
 class Profile:
-    def __init__(self):
+    def __init__(self, followers: list = [], followings: list = []):
         # Default initialization (empty state until new is called)
         self.address = None
         self.is_signed_up = False
         self.description = None
-        self.followers = []
-        self.following = []
+        self.followers = followers
+        self.following = followings
         self.transactions = []
 
     # Function for creating a new profile
@@ -56,12 +59,16 @@ class Profile:
             self.following.remove(profile)
         else:
             return False
-        
+
         return True
-    
-    def get_actions(self);
+
+    def get_actions(self):
         pass
 
+
 def profile_of(address: str) -> Profile:
+    following = get_followings(address)
+    followers = get_followers(address)
     # Getting the profile of a user based on address from database
-    pass
+    profile = Profile(followers=followers, followings=following)
+    return profile

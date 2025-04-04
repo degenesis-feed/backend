@@ -22,6 +22,12 @@ def create_tables():
             following_address VARCHAR(255)
         );
     """
+    create_description_table = """
+        CREATE TABLE IF NOT EXISTS descriptions(
+            description_id INTEGER PRIMARY KEY,
+            description_text TEXT
+        );
+    """
 
     with con:
         cursor = con.cursor()
@@ -59,3 +65,4 @@ if __name__ == "__main__":
     create_tables()
     print("Tables created")
     add_mock_data()
+    print("Mock data created")

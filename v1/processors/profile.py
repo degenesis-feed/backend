@@ -12,10 +12,7 @@ class Profile:
         self.transactions = []
 
     # Function for creating a new profile
-    def new(self, address: str, description: str):
-        # Add address as a string
-        self.address = address
-
+    def new(self, description: str):
         # Have the is_signed_up status as true
         self.is_signed_up = True
 

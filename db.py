@@ -47,3 +47,19 @@ def add_comment():
 
 def get_comments(tx_hash):
     pass
+
+
+def add_description():
+    pass
+
+
+def get_description(address):
+    pass
+
+
+def add_reaction(tx_hash):
+    pass
+
+
+def get_reactions(tx_hash):
+    pass

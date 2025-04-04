@@ -23,6 +23,10 @@ def get_followers():
 def get_profile():
     pass
 
+@app.post("/signUp/{wallet}")
+def sign_up():
+    pass 
+
 @app.get("/communities")
 def get_communities():
     pass
@@ -34,4 +38,5 @@ def add_contract():
 @app.post("/interactWithContract")
 def interact_with_contract():
     pass
+
 

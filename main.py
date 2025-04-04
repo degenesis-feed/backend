@@ -8,17 +8,30 @@ def ping():
     return "pong"
 
 @app.get("/feed/{wallet}")
-def get_feed()
+def get_feed():
+    pass
 
 @app.get("/following/{wallet}")
-def get_following()
+def get_following():
+    pass
 
 @app.get("/followers/{wallet}")
-def get_followers()
+def get_followers():
+    pass
 
 @app.get("/profile/{wallet}")
-def get_profile()
+def get_profile():
+    pass
 
 @app.get("/communities")
-def get_communities()
+def get_communities():
+    pass
+
+@app.post("/addContract")
+def add_contract():
+    pass
+
+@app.post("/interactWithContract")
+def interact_with_contract():
+    pass
 

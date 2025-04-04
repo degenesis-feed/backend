@@ -23,7 +23,8 @@ class Profile:
         self.description = description
 
         # Create an empty array for followers for the user
-        self.followers = []
+        con = get_connection()
+        self.followers = get_followers(con, address)
 
         # Create an empty array for profiles the user follows
         self.following = []
@@ -74,6 +75,7 @@ def profile_of(address: str) -> Profile:
     con = get_connection()
     following = get_followings(con, address)
     followers = get_followers(con, address)
+    # get profile description
     # Getting the profile of a user based on address from database
     profile = Profile(address=address, followers=followers, followings=following)
     return profile

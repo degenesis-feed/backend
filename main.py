@@ -40,11 +40,13 @@ def get_communities():
     pass
 
 
+# Curvegrid
 @app.post("/addContract")
 def add_contract():
     pass
 
 
+# Curvegrid
 @app.post("/interactWithContract")
 def interact_with_contract():
     pass

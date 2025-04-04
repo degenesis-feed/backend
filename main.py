@@ -14,6 +14,11 @@ def ping():
 def get_feed():
     pass
 
+# Nodit webhook function
+@app.post("/feedListen")
+def listen_to_feed():
+    pass
+
 
 @app.get("/following/{wallet}")
 def get_following(wallet: str) -> list[str]:
@@ -30,7 +35,7 @@ def get_profile(wallet: str) -> Profile:
     return profile_of(wallet)
 
 
-@app.post("/signUp/")
+@app.post("/signUp")
 def sign_up(wallet: str, description: str):
     Profile(wallet).new(description)
 

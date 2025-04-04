@@ -4,54 +4,55 @@ from v1.processors.profile import Profile, profile_of
 app = FastAPI()
 
 
-@app.get("/ping")
+@app.get("/v1/ping")
 def ping():
     # Health check, easily test that api is live
     return "pong"
 
 
-@app.get("/feed/{wallet}")
-def get_feed():
+@app.get("/v1/feed/{wallet}")
+def get_feed(wallet: str):
+    profile = profile_of(wallet)
     pass
 
 # Nodit webhook function
-@app.post("/feedListen")
+@app.post("/v1/feedListen")
 def listen_to_feed():
     pass
 
 
-@app.get("/following/{wallet}")
+@app.get("/v1/following/{wallet}")
 def get_following(wallet: str) -> list[str]:
     return profile_of(wallet).following
 
 
-@app.get("/followers/{wallet}")
+@app.get("/v1/followers/{wallet}")
 def get_followers(wallet: str) -> list[str]:
     return profile_of(wallet).followers
 
 
-@app.get("/profile/{wallet}")
+@app.get("/v1/profile/{wallet}")
 def get_profile(wallet: str) -> Profile:
     return profile_of(wallet)
 
 
-@app.post("/signUp")
+@app.post("/v1/signUp")
 def sign_up(wallet: str, description: str):
     Profile(wallet).new(description)
 
 
-@app.get("/communities")
+@app.get("/v1/communities")
 def get_communities():
     pass
 
 
 # Curvegrid
-@app.post("/addContract")
+@app.post("/v1/addContract")
 def add_contract():
     pass
 
 
 # Curvegrid
-@app.post("/interactWithContract")
+@app.post("/v1/interactWithContract")
 def interact_with_contract():
     pass

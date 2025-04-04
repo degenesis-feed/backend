@@ -36,7 +36,16 @@ def add_mock_data():
     con = get_connection()
     mock_data_query = """
         INSERT INTO followings(user_address, following_address) VALUES
-        ('test1', 'test2'), ('test1', 'test3');
+        ('0xc0bffea543e5a701a2935a7aeae3e948587606b5', '0x4110eaa750f6f781a9bea2dd911ca5ba5b9a3e9d'),
+        ('0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb', '0x993cd052b5f015e82a8fe8d5037f3afebf6bb928'),
+        ('0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb', '0x0f4162c6148bed0dca1ff1a094708858a6d35723'),
+        ('0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb', '0x79fad124e5bb17d56f50139a686c66481d287fd5'),
+        ('0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb', '0x63629d63f648e253ee5d4bb0d93bb5473c8daf1e'),
+        ('0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb', '0x912eb8d1ad5cdf730fd9eb5790f5b70d879013f3'),
+        ('0x912eb8d1ad5cdf730fd9eb5790f5b70d879013f3', '0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb'),
+        ('0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb', '0xdd7d37f72b6981f309525caa4403dd1e99eb65d5'),
+        ('0xdd7d37f72b6981f309525caa4403dd1e99eb65d5', '0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb'),
+        ('0x0f4162c6148bed0dca1ff1a094708858a6d35723', '0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb');
     """
     with con:
         cursor = con.cursor()

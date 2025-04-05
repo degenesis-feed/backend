@@ -71,9 +71,9 @@ class Nodit:
                 response_dict = json.loads(response.text)
                 print(response_dict["items"])
                 for item in response_dict["items"]:
-                    if item.input != "0x":
+                    if item["input"] != "0x":
                         transactions.append(response_dict["items"])
- 
+
             except Exception:
                 # avoid api limit by just skipping the rest. Needs better fix
                 break

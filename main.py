@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from v1.utils.entity_lookup import EntityLookup
 from v1.processors.profile import Profile, profile_of
 from v1.utils.feedme_status import Error as FeedMeError
@@ -15,6 +16,14 @@ from nodit import Nodit
 # /_/  |_/_/   /___/
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 nodit = Nodit()
 
 
@@ -163,7 +172,9 @@ def add_contract(contract_address: str):
 
 # Curvegrid
 @app.post("/v1/interactWithContract")
-def interact_with_contract(wallet: str, contract_address: str, method: str, args: list[str]):
+def interact_with_contract(
+    wallet: str, contract_address: str, method: str, args: list[str]
+):
     pass
 
 

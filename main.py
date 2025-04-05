@@ -213,9 +213,11 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
+@app.websocket("/ws/{wallet}")
+async def websocket_endpoint(websocket: WebSocket, wallet: str):
     await manager.connect(websocket)
+    addresses = get_following(wallet)
+    nodit.add_webhook(wallet, addresses)
     try:
         while True:
             await websocket.receive_text()
@@ -223,9 +225,10 @@ async def websocket_endpoint(websocket: WebSocket):
         pass
     finally:
         manager.disconnect(websocket)
+        nodit.clear_webhooks(wallet)
 
 
-@app.post("/webhook")
+@app.post("/webhook/")
 async def webhook_listener(request: Request):
     try:
         payload = await request.json()

@@ -116,8 +116,8 @@ def sign_up(wallet: str, description: str):
 
 
 @app.post("/v1/follow")
-def follow(follower: str, who_to_follow: str, profile_or_wallet: str):
-    follow_entity = EntityLookup.from_string(profile_or_wallet)
+def follow(follower: str, who_to_follow: str, profile_or_community: str):
+    follow_entity = EntityLookup.from_string(profile_or_community)
 
     follower_profile = profile_of(follower)
     if follow_entity == EntityLookup.PROFILE:
@@ -132,8 +132,8 @@ def follow(follower: str, who_to_follow: str, profile_or_wallet: str):
 
 
 @app.post("/v1/unfollow")
-def unfollow(unfollower: str, who_to_unfollow: str, profile_or_wallet: str):
-    unfollow_entity = EntityLookup.from_string(profile_or_wallet)
+def unfollow(unfollower: str, who_to_unfollow: str, profile_or_community: str):
+    unfollow_entity = EntityLookup.from_string(profile_or_community)
     unfollower_profile = profile_of(unfollower)
 
     if unfollow_entity == EntityLookup.PROFILE:

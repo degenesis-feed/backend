@@ -1,9 +1,9 @@
 import os
 import requests
 from dotenv import load_dotenv
-from v1.utils.feedme_status import FeedMeStatus
 from db.db import get_abi, add_abi
 from db.db_setup import get_connection
+from v1.utils.feedme_status import FeedMeStatus
 
 load_dotenv()
 

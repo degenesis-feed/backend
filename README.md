@@ -27,7 +27,6 @@ Communities are created using Self Protocol, and can be categorized by anything 
 
 ## Links
 
-- [Devfolio](https://devfolio.co/projects/sloth-shaming-bea7)
 - [Vercel](https://sloths-warsaw.vercel.app/)
 - [Github](https://github.com/degenesis-feed)
 

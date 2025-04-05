@@ -1,4 +1,3 @@
-from typing import List
 from v1.processors.nodit import Nodit
 from v1.processors.curvegrid import (
     make_contract_instance,
@@ -7,10 +6,11 @@ from v1.processors.curvegrid import (
 from fastapi.responses import JSONResponse
 from fastapi import FastAPI, Request, WebSocket
 from v1.utils.entity_lookup import EntityLookup
+from v1.processors.community import get_community
 from fastapi.middleware.cors import CORSMiddleware
 from v1.processors.profile import Profile, profile_of
 from v1.utils.feedme_status import Error as FeedMeError
-
+from v1.utils.connection_manager import ConnectionManager
 
 #     ___    ____  ____
 #    /   |  / __ \/  _/
@@ -192,36 +192,19 @@ def interact_with_contract(
 
 
 @app.get("/v1/communities")
-def get_communities():
-    pass
+def get_communities(name: str) -> dict:
+    return get_community(name).__dict__
 
-
-# Websocket/webhook
-
-
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: List[WebSocket] = []
-
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
-
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-
-    async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
-
-
-manager = ConnectionManager()
 
 #  _       ____________ _____ ____  ________ __ ____________
 # | |     / / ____/ __ ) ___// __ \/ ____/ //_// ____/_  __/
 # | | /| / / __/ / __  \__ \/ / / / /   / ,<  / __/   / /
 # | |/ |/ / /___/ /_/ /__/ / /_/ / /___/ /| |/ /___  / /
 # |__/|__/_____/_____/____/\____/\____/_/ |_/_____/ /_/
+
+
+
+manager = ConnectionManager()
 
 
 @app.websocket("/ws/{wallet}")

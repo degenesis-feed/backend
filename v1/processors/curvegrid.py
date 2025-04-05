@@ -12,7 +12,7 @@ CGJWT = os.getenv("CURVEGRID_JWT")
 CHAIN = "ethereum"
 
 
-def make_contract_instance(contract_address: str) -> FeedMeStatus:
+def make_contract_instance(contract_address: str):
     con = get_connection()
     cached_abi = get_abi(con, contract_address)
     if cached_abi:
@@ -24,8 +24,9 @@ def make_contract_instance(contract_address: str) -> FeedMeStatus:
     header = {"Authorization": f"Bearer {CGJWT}"}
 
     res = requests.get(final_url, params=query, headers=header)
-    add_abi(con, contract_address, res.text)
-    return FeedMeStatus.SUCCESS.create("Address info: ", res.text)
+    if res.json["result"]["contractLookup"][0]["abi"] is not None:
+        add_abi(con, contract_address, res.text)
+        return FeedMeStatus.SUCCESS.create("Address info: ", res.text)
 
 
 def interact_with_contract_method(

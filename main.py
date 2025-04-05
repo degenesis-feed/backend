@@ -192,8 +192,8 @@ def interact_with_contract(
 
 
 @app.get("/v1/communities")
-def get_communities():
-    pass
+def get_communities(name: str) -> dict:
+    return get_community(name).__dict__
 
 
 #  _       ____________ _____ ____  ________ __ ____________

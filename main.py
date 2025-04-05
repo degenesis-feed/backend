@@ -1,15 +1,15 @@
-from nodit import Nodit
 from typing import List
+from v1.processors.nodit import Nodit
+from v1.processors.curvegrid import (
+    make_contract_instance,
+    interact_with_contract_method,
+)
 from fastapi.responses import JSONResponse
 from fastapi import FastAPI, Request, WebSocket
 from v1.utils.entity_lookup import EntityLookup
 from fastapi.middleware.cors import CORSMiddleware
 from v1.processors.profile import Profile, profile_of
 from v1.utils.feedme_status import Error as FeedMeError
-from v1.processors.curvegrid import (
-    make_contract_instance,
-    interact_with_contract_method,
-)
 
 
 #     ___    ____  ____
@@ -171,7 +171,7 @@ def add_contract(contract_address: str):
 def interact_with_contract(
     wallet: str, contract_address: str, method: str, args: list[str] | None
 ):
-    res = interact_with_contract(wallet, contract_address, method, args)
+    res = interact_with_contract_method(wallet, contract_address, method, args)
 
     if isinstance(res, FeedMeError):
         raise res

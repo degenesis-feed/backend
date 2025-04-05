@@ -13,7 +13,7 @@ class Profile:
         self.followers = followers
         self.following = followings
         self.community_followings = []
-        self.transactions = []
+        self.actions = []
 
     # Function for creating a new profile
     def new(self, description: str) -> FeedMeStatus:
@@ -134,8 +134,8 @@ class Profile:
             f"Succeeded to unfollow community: {community}"
         )
 
-    def get_actions(self):
-        pass
+    def get_actions(self) -> FeedMeStatus:
+        return FeedMeStatus.SUCCESS.create(f"Actions of {self.address}", self.actions)
 
 
 def profile_of(address: str) -> Profile:

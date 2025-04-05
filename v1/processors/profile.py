@@ -158,7 +158,7 @@ class Profile:
             txs_rawish = nodit.get_historical(address=addy)
             for raw_tx in txs_rawish:
                 contract_abi = make_contract_instance(raw_tx["to"])
-                w3w.parse_input(abi=contract_abi, encoded_input=raw_tx["input"], contract_address=raw_tx["to"])
+                decoded_tx = w3w.parse_input(abi=contract_abi, encoded_input=raw_tx["input"], contract_address=raw_tx["to"])
                 # Fill in here with database stuff to enter the decoded data for each tx
                 # Suggesting maybe hash -> method name -> method arguments, as a dynamic typed array
 

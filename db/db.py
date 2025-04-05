@@ -52,7 +52,6 @@ def add_description(con, address: str, description: str):
         INSERT INTO profiles(address, description) VALUES
         (%s, %s);
     """
-    print("adding into profiles")
     with con:
         cursor = con.cursor()
         cursor.execute(query, (address, description))
@@ -107,7 +106,6 @@ def add_tx(
         INSERT INTO transactions(tx_hash, from_add, to_add, input, function, raw_values) VALUES
         (%s, %s, %s, %s, %s, %s);
     """
-    print("adding into profiles")
     with con:
         cursor = con.cursor()
         cursor.execute(query, (tx_hash, from_add, to_add, input, function, raw_values))

@@ -1,6 +1,6 @@
 from v1.utils.feedme_status import FeedMeStatus
 from v1.processors.community import get_community
-from db.db import get_followers, get_followings, add_following
+from db.db import get_followers, get_followings, add_following, add_description
 from db.db_setup import get_connection
 
 
@@ -29,6 +29,7 @@ class Profile:
         # Create an empty array for followers for the user
         con = get_connection()
         self.followers = get_followers(con, self.address)
+        add_description(con, self.address, description)
 
         # Create an empty array for profiles the user follows
         self.following = []

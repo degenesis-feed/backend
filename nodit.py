@@ -18,7 +18,7 @@ if not webhook_url:
 class Nodit:
     def __init__(self, api_key=api_key):
         self.api_key = api_key
-        self.networks = ["base", "ethereum"]
+        self.networks = ["base"]
         pass
 
     def _get_api_url(
@@ -49,25 +49,29 @@ class Nodit:
             "content-type": "application/json",
             "X-API-KEY": self.api_key,
         }
-        transactions = {}
+        transactions = []
+        if not from_date or not to_date:
+            current_time = datetime.now()
+            to_date = current_time.isoformat()
+            thirty_days_before = current_time - timedelta(days=30)
+            from_date = thirty_days_before.isoformat()
         for network in self.networks:
-            transactions[network] = []
             url = self._get_api_url(network=network, action="historical_transfers")
-            if not from_date or not to_date:
-                current_time = datetime.now()
-                to_date = current_time.isoformat()
-                thirty_days_before = current_time - timedelta(days=30)
-                from_date = thirty_days_before.isoformat()
             payload = {
                 "accountAddress": address,
                 "fromDate": from_date,
                 "toDate": to_date,
                 "withCount": False,
-                "withZeroValue": False,
+                "withZeroValue": True,
             }
-            response = requests.post(url, json=payload, headers=headers)
-            response_dict = json.loads(response.text)
-            transactions[network] = response_dict["items"]
+            try:
+                response = requests.post(url, json=payload, headers=headers)
+                response_dict = json.loads(response.text)
+                print(response_dict["items"])
+                transactions.append(response_dict["items"])
+            except Exception:
+                # avoid api limit by just skipping the rest. Needs better fix
+                break
         # print(transactions)
         return transactions
 

@@ -1,3 +1,6 @@
+from psycopg2.extras import RealDictCursor
+
+
 def get_followings(con, address: str):
     query = """
         SELECT following_address FROM followings WHERE user_address = %s;
@@ -129,14 +132,18 @@ def get_tx_hash(con, tx_hash: str):
 
 def get_tx_sender(con, from_add: str):
     query = """
-        SELECT (input, function, raw_values, timestamp) FROM transactions WHERE from_add = %s;
+        SELECT * FROM transactions WHERE from_add = %s;
     """
     with con:
-        cursor = con.cursor()
-        cursor.execute(query, (from_add,))
-        results = cursor.fetchall()
-        for result in results:
-            return result[0]
+        with con.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, (from_add,))
+            results = cursor.fetchall()
+            return results
+            # clean_results = []
+            # for result in results:
+            # print("in db:")
+            # print(results)
+            #     clean_results.append(result[0])
 
 
 def get_last_tx_timestamp_for_sender(con, from_add: str):

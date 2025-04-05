@@ -69,3 +69,26 @@ def add_reaction(tx_hash):
 
 def get_reactions(tx_hash):
     pass
+
+
+def get_abi(con, contract_address):
+    query = """
+        SELECT abi FROM abis WHERE contract_address = %s;
+    """
+    with con:
+        cursor = con.cursor()
+        cursor.execute(query, (contract_address,))
+        results = cursor.fetchall()
+        clean_results = []
+        for result in results:
+            return result[0]
+
+
+def add_abi(con, contract_address, abi):
+    query = """
+        INSERT INTO abis(contract_address, abi) VALUES
+        (%s, %s);
+    """
+    with con:
+        cursor = con.cursor()
+        cursor.execute(query, (contract_address, abi))

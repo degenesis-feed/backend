@@ -101,14 +101,17 @@ def add_tx(
     input: str,
     function: str,
     raw_values: str,
+    timestamp: str,
 ):
     query = """
-        INSERT INTO transactions(tx_hash, from_add, to_add, input, function, raw_values) VALUES
-        (%s, %s, %s, %s, %s, %s);
+        INSERT INTO transactions(tx_hash, from_add, to_add, input, function, raw_values, timestamp) VALUES
+        (%s, %s, %s, %s, %s, %s, %s);
     """
     with con:
         cursor = con.cursor()
-        cursor.execute(query, (tx_hash, from_add, to_add, input, function, raw_values))
+        cursor.execute(
+            query, (tx_hash, from_add, to_add, input, function, raw_values, timestamp)
+        )
     pass
 
 
@@ -127,6 +130,20 @@ def get_tx_hash(con, tx_hash: str):
 def get_tx_sender(con, from_add: str):
     query = """
         SELECT input, function, raw_values, timestamp FROM transactions WHERE from_add = %s;
+    """
+    with con:
+        cursor = con.cursor()
+        cursor.execute(query, (from_add,))
+        results = cursor.fetchall()
+        for result in results:
+            return result[0]
+
+
+def get_last_tx_timestamp_for_sender(con, from_add: str):
+    query = """
+        SELECT MAX(timestamp) AS highest_timestamp
+        FROM transactions
+        WHERE from_add = %s;
     """
     with con:
         cursor = con.cursor()

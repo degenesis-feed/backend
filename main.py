@@ -5,30 +5,15 @@ from fastapi.responses import JSONResponse
 from v1.processors.profile import Profile, profile_of
 from v1.utils.feedme_status import Error as FeedMeError
 
-#     ____  ____ 
-#    / __ \/ __ )
-#   / / / / __  |
-#  / /_/ / /_/ / 
-# /_____/_____/  
-
-def setup_db():
-    if os.path.exists("data.db"):
-        pass
-    else:
-        try:
-            create_tables()
-        except Exception as e:
-            raise FeedMeError(f"Failed to set up database: {str(e)}")
-
-setup_db()
 
 #     ___    ____  ____
 #    /   |  / __ \/  _/
-#   / /| | / /_/ // /  
-#  / ___ |/ ____// /   
-# /_/  |_/_/   /___/   
+#   / /| | / /_/ // /
+#  / ___ |/ ____// /
+# /_/  |_/_/   /___/
 
 app = FastAPI()
+
 
 @app.exception_handler(FeedMeError)
 async def custom_error_handler(request: Request, exc: FeedMeError):

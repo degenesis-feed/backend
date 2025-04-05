@@ -112,9 +112,9 @@ def add_tx(
     pass
 
 
-def get_tx(con, tx_hash: str):
+def get_tx_hash(con, tx_hash: str):
     query = """
-        SELECT input, function, raw_values FROM transactions WHERE tx_hash = %s;
+        SELECT input, function, raw_values, timestamp FROM transactions WHERE tx_hash = %s;
     """
     with con:
         cursor = con.cursor()
@@ -122,10 +122,15 @@ def get_tx(con, tx_hash: str):
         results = cursor.fetchall()
         for result in results:
             return result[0]
-    #    following_id SERIAL PRIMARY KEY,
-    #     tx_hash VARCHAR(255),
-    #     from_add VARCHAR(255),
-    #     to_add VARCHAR(255),
-    #     input TEXT,
-    #     function TEXT,
-    #     raw_values
+
+
+def get_tx_sender(con, from_add: str):
+    query = """
+        SELECT input, function, raw_values, timestamp FROM transactions WHERE from_add = %s;
+    """
+    with con:
+        cursor = con.cursor()
+        cursor.execute(query, (from_add,))
+        results = cursor.fetchall()
+        for result in results:
+            return result[0]

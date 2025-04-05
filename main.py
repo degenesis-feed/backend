@@ -13,6 +13,12 @@ def ping():
     return "pong"
 
 
+#     ______________________     _____ __  ____________
+#    / ____/ ____/ ____/ __ \   / ___// / / /  _/_  __/
+#   / /_  / __/ / __/ / / / /   \__ \/ /_/ // /  / /   
+#  / __/ / /___/ /___/ /_/ /   ___/ / __  // /  / /    
+# /_/   /_____/_____/_____/   /____/_/ /_/___/ /_/ 
+
 @app.get("/v1/feed/{wallet}")
 def get_feed(wallet: str):
     profile = profile_of(wallet)
@@ -24,6 +30,16 @@ def get_feed(wallet: str):
 def listen_to_feed():
     pass
 
+#     ____  ____  ____  ____________    ______   _____   ____________ 
+#    / __ \/ __ \/ __ \/ ____/  _/ /   / ____/  /  _/ | / / ____/ __ \
+#   / /_/ / /_/ / / / / /_   / // /   / __/     / //  |/ / /_  / / / /
+#  / ____/ _, _/ /_/ / __/ _/ // /___/ /___   _/ // /|  / __/ / /_/ / 
+# /_/   /_/ |_|\____/_/   /___/_____/_____/  /___/_/ |_/_/    \____/  
+#    __________________________________  _____
+#   / ____/ ____/_  __/_  __/ ____/ __ \/ ___/
+#  / / __/ __/   / /   / / / __/ / /_/ /\__ \ 
+# / /_/ / /___  / /   / / / /___/ _, _/___/ / 
+# \____/_____/ /_/   /_/ /_____/_/ |_|/____/  
 
 @app.get("/v1/following/{wallet}")
 def get_following(wallet: str) -> list[str]:
@@ -64,10 +80,6 @@ def unfollow(unfollower: str, who_to_unfollow: str) -> FeedMeStatus:
     unfollower_profile = profile_of(unfollower)
     return unfollower_profile.unfollow(who_to_unfollow)
 
-@app.get("/v1/communities")
-def get_communities():
-    pass
-
 
 # Curvegrid
 @app.post("/v1/addContract")
@@ -78,4 +90,9 @@ def add_contract():
 # Curvegrid
 @app.post("/v1/interactWithContract")
 def interact_with_contract():
+    pass
+
+
+@app.get("/v1/communities")
+def get_communities():
     pass

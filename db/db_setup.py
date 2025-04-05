@@ -1,7 +1,7 @@
 # import sqlite3
+from dotenv import load_dotenv
 import os
 import psycopg2
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -37,6 +37,11 @@ def create_tables():
             following_id SERIAL PRIMARY KEY,
             user_address VARCHAR(255),
             following_address VARCHAR(255)
+        );
+        CREATE TABLE IF NOT EXISTS transactions(
+            following_id SERIAL PRIMARY KEY,
+            from_add VARCHAR(255),
+            to_add VARCHAR(255)
         );
     """
     create_description_table = """
@@ -77,9 +82,9 @@ def add_mock_data():
         cursor.close()
 
 
-if __name__ == "__main__":
-    print("Creating tables")
-    create_tables()
-    print("Tables created")
-    add_mock_data()
-    print("Mock data created")
+# if __name__ == "__main__":
+#     print("Creating tables")
+#     # create_tables()
+#     print("Tables created")
+#     # add_mock_data()
+#     print("Mock data created")

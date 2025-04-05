@@ -72,7 +72,7 @@ class Nodit:
                 print(response_dict["items"])
                 for item in response_dict["items"]:
                     if item["input"] != "0x":
-                        transactions.append(response_dict["items"])
+                        transactions.append(item)
 
             except Exception:
                 # avoid api limit by just skipping the rest. Needs better fix

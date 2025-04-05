@@ -77,11 +77,14 @@ def get_feed_v2(wallet: str):
     transactions = []
     for address in addresses:
         profile = profile_of(address)
-        items = profile.get_actions().value
-        if items:
-            for item in items:
-                # print(item)
-                transactions.append(item)
+        try :
+            items = profile.fill_actions().value
+            if items:
+                for item in items:
+                    # print(item)
+                    transactions.append(item)
+        except Exception:
+            pass
     return transactions
 
 
@@ -91,15 +94,14 @@ def get_historical_transactions(wallet: str):
     # print(f"checking these: {addresses}")
     transactions = []
     for address in addresses:
-        # get_tx_sender()
         profile = profile_of(address)
 
-        # items = profile.get_actions().value
-        # if items:
-        #     for item in items:
-        #         # print(item)
-        #         transactions.append(item)
-    # return transactions
+        items = profile.get_actions().value
+        if items:
+            for item in items:
+                # print(item)
+                transactions.append(item)
+    return transactions
 
 
 #     ____  ____  ____  ____________    ______   _____   ____________

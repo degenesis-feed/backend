@@ -113,6 +113,17 @@ def add_tx(
         cursor.execute(query, (tx_hash, from_add, to_add, input, function, raw_values))
     pass
 
+
+def get_tx(con, tx_hash: str):
+    query = """
+        SELECT input, function, raw_values FROM transactions WHERE tx_hash = %s;
+    """
+    with con:
+        cursor = con.cursor()
+        cursor.execute(query, (tx_hash,))
+        results = cursor.fetchall()
+        for result in results:
+            return result[0]
     #    following_id SERIAL PRIMARY KEY,
     #     tx_hash VARCHAR(255),
     #     from_add VARCHAR(255),

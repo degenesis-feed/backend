@@ -1,5 +1,5 @@
-from db_setup import get_connection
-from db import get_followers, get_followings
+from db.db_setup import get_connection
+from db.db import get_followers, get_followings
 
 con = get_connection()
 

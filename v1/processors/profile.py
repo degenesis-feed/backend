@@ -1,4 +1,4 @@
-from db import get_connection, get_followers, get_followings, add_following
+from db.db import get_connection, get_followers, get_followings, add_following
 from v1.utils.feedme_status import FeedMeStatus
 
 

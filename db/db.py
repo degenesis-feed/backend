@@ -1,5 +1,5 @@
 import sqlite3
-from db_setup import get_connection
+from db.db_setup import get_connection
 
 
 def get_followings(con, address: str):

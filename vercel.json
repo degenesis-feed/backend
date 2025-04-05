@@ -1,7 +1,4 @@
 {
-    "builds": [
-        { "src":"main.py", "use": "@vercel/python" },
-        { "src":"db_setup.py", "use": "@vercel/python" }
-    ],
+    "builds": [{ "src":"main.py", "use": "@vercel/python" }],
     "routes": [{ "src": "/(.*)", "dest": "main.py" }]
 }

@@ -4,7 +4,7 @@
         { "src":"db_setup.py", "use": "@vercel/python" }
     ],
     "routes": [
-        { "src": "/(.*)", "dest": "main.py" }
+        { "src": "/(.*)", "dest": "main.py" },
         { "src": "/db_setup", "dest": "db_setup.py" }
     ]
 }

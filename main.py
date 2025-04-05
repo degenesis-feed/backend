@@ -1,3 +1,5 @@
+import json
+
 from fastapi import FastAPI
 from v1.processors.profile import Profile, profile_of
 
@@ -15,6 +17,7 @@ def get_feed(wallet: str):
     profile = profile_of(wallet)
     pass
 
+
 # Nodit webhook function
 @app.post("/v1/feedListen")
 def listen_to_feed():
@@ -23,17 +26,20 @@ def listen_to_feed():
 
 @app.get("/v1/following/{wallet}")
 def get_following(wallet: str) -> list[str]:
-    return profile_of(wallet).following
+    return json.dumps(profile_of(wallet).following)
+    pass
 
 
 @app.get("/v1/followers/{wallet}")
 def get_followers(wallet: str) -> list[str]:
     return profile_of(wallet).followers
+    pass
 
 
 @app.get("/v1/profile/{wallet}")
-def get_profile(wallet: str) -> Profile:
+def get_profile(wallet: str) -> dict:
     return profile_of(wallet)
+    pass
 
 
 @app.post("/v1/signUp")

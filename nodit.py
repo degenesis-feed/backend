@@ -16,7 +16,7 @@ if not webhook_url:
 
 
 class Nodit:
-    def __init__(self, api_key):
+    def __init__(self, api_key=api_key):
         self.api_key = api_key
         self.networks = ["base", "ethereum"]
         pass

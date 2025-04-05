@@ -13,8 +13,11 @@ class Profile:
         self.transactions = []
 
     # Function for creating a new profile
-    def new(self, description: str):
+    def new(self, description: str) -> FeedMeStatus:
         # Have the is_signed_up status as true
+        if self.is_signed_up:
+            return FeedMeStatus.ERROR.create(f"User {self.address} already signed up")
+
         self.is_signed_up = True
 
         # Adding a little description if the user wanted that
@@ -26,6 +29,8 @@ class Profile:
 
         # Create an empty array for profiles the user follows
         self.following = []
+
+        return FeedMeStatus.SUCCESS.create(f"Managed to sign up a new profile for {self.address}")
 
     # Follow function for a profile
     def follow(self, who_to_follow: str) -> FeedMeStatus:

@@ -29,7 +29,7 @@ class Profile:
         self.followers = followers
         self.following = followings
         self.community_followings = []
-        self.actions = self.get_actions()
+        # self.actions = self.get_actions()
 
     # Function for creating a new profile
     def new(self, description: str) -> FeedMeStatus:
@@ -179,7 +179,9 @@ class Profile:
                 contract_abi = make_contract_instance(raw_tx["to"]).value
                 if contract_abi is not None:
                     decoded_tx = w3w.parse_input(
-                        abi=json.loads(contract_abi)["result"]["contractLookup"][0]["abi"],
+                        abi=json.loads(contract_abi)["result"]["contractLookup"][0][
+                            "abi"
+                        ],
                         encoded_input=raw_tx["input"],
                         contract_address=raw_tx["to"],
                     )

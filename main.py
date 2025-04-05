@@ -1,7 +1,4 @@
-import os
 from fastapi import FastAPI, Request
-
-# from db.db_setup import create_tables
 from fastapi.responses import JSONResponse
 from v1.utils.entity_lookup import EntityLookup
 from v1.processors.profile import Profile, profile_of

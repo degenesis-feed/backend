@@ -1,6 +1,6 @@
 from v1.utils.feedme_status import FeedMeStatus
-from v1.processors.community import Community, get_community
-from db.db import get_connection, get_followers, get_followings, add_following
+from v1.processors.community import get_community
+from db.db import get_followers, get_followings, add_following
 
 
 class Profile:

@@ -1,4 +1,4 @@
-import os
+import os, json
 import requests
 from dotenv import load_dotenv
 from db.db import get_abi, add_abi
@@ -16,6 +16,7 @@ def make_contract_instance(contract_address: str):
     con = get_connection()
     cached_abi = get_abi(con, contract_address)
     if cached_abi:
+        # print(f"returning abi: {cached_abi}")
         return FeedMeStatus.SUCCESS.create("Address info: ", cached_abi)
 
     query = {"include": "contractLookup"}
@@ -24,9 +25,14 @@ def make_contract_instance(contract_address: str):
     header = {"Authorization": f"Bearer {CGJWT}"}
 
     res = requests.get(final_url, params=query, headers=header)
-    if res.json["result"]["contractLookup"][0]["abi"] is not None:
-        add_abi(con, contract_address, res.text)
-        return FeedMeStatus.SUCCESS.create("Address info: ", res.text)
+    # print("========here res========")
+    # print(res)
+    try:
+        if json.loads(res.text)["result"]["contractLookup"][0]["abi"] is not None:
+            add_abi(con, contract_address, res.text)
+            return FeedMeStatus.SUCCESS.create("Address info: ", res.text)
+    except Exception:
+        pass
 
 
 def interact_with_contract_method(

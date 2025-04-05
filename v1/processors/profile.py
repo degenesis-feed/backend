@@ -175,8 +175,10 @@ class Profile:
                 con = get_connection()
                 last_timestamp = get_last_tx_timestamp_for_sender(con, from_add=addy)
                 if last_timestamp:
-                    last_timestamp = datetime.utcfromtimestamp(last_timestamp).isoformat(                txs_rawish = nodit.get_historical(address=addy, from_date=last_timestamp)
-                
+                    last_timestamp = datetime.utcfromtimestamp(last_timestamp).isoformat(
+                        txs_rawish = nodit.get_historical(address=addy, from_date=last_timestamp)
+                    )
+
                 for raw_tx in txs_rawish:
                     try:
                         if not raw_tx.get("to") or not raw_tx.get("input"):

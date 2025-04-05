@@ -60,12 +60,6 @@ def get_feed(wallet: str):
     return transactions
 
 
-# Nodit webhook function
-@app.post("/v1/feedListen")
-def listen_to_feed():
-    pass
-
-
 #     ____  ____  ____  ____________    ______   _____   ____________
 #    / __ \/ __ \/ __ \/ ____/  _/ /   / ____/  /  _/ | / / ____/ __ \
 #   / /_/ / /_/ / / / / /_   / // /   / __/     / //  |/ / /_  / / / /

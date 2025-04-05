@@ -94,14 +94,18 @@ class Profile:
             f"Succeeded to unfollow profile: {profile.address}"
         )
 
+    # Function for following a community
     def follow_community(self, name_of_community: str) -> FeedMeStatus:
+        # Fetch the community in question
         community = get_community(name_of_community)
 
+        # Append community name to the communities that the address follows
         if community.name not in self.community_followings:
             self.community_followings.append(community.name)
         else:
             return FeedMeStatus.ERROR.create(f"You already follow {community.name}")
 
+        # Append the address to followers of the community
         if self.address not in community.followers:
             community.followers.append(self.address)
         else:
@@ -114,14 +118,18 @@ class Profile:
             f"Succeeded to follow community: {community}"
         )
 
+    # Function for unfollowing a community
     def unfollow_community(self, name_of_community: str) -> FeedMeStatus:
+        # Fetch the community in question
         community = get_community(name_of_community)
 
+        # Remove the community name from the communities that the wallet follows
         if community.name in self.community_followings:
             self.community_followings.append(community.name)
         else:
             return FeedMeStatus.ERROR.create(f"You don't even follow {community.name}")
 
+        # Remove the wallet address from followers of the community
         if self.address in community.followers:
             community.followers.append(self.address)
         else:

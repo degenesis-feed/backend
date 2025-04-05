@@ -92,3 +92,23 @@ def add_abi(con, contract_address, abi):
     with con:
         cursor = con.cursor()
         cursor.execute(query, (contract_address, abi))
+
+
+def add_tx(con, address: str, description: str):
+    query = """
+        INSERT INTO profiles(address, description) VALUES
+        (%s, %s);
+    """
+    print("adding into profiles")
+    with con:
+        cursor = con.cursor()
+        cursor.execute(query, (address, description))
+    pass
+
+    #    following_id SERIAL PRIMARY KEY,
+    #     tx_hash VARCHAR(255),
+    #     from_add VARCHAR(255),
+    #     to_add VARCHAR(255),
+    #     input TEXT,
+    #     function TEXT,
+    #     raw_values

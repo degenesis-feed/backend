@@ -21,13 +21,18 @@ class Nodit:
         self.networks = ["base", "ethereum"]
         pass
 
-    def _get_api_url(self, network: str, action: str) -> str:
+    def _get_api_url(
+        self, network: str, action: str, subscription_id: str = None
+    ) -> str:
         match action:
             case "historical_transfers":
                 url = f"https://web3.nodit.io/v1/{network}/mainnet/token/getTokenTransfersByAccount"
                 return url
             case "webhook":
                 url = f"https://web3.nodit.io/v1/{network}/mainnet/webhooks"
+                return url
+            case "delete_webhook":
+                url = f"https://web3.nodit.io/v1/{network}/mainnet/webhooks/{subscription_id}"
                 return url
 
         pass
@@ -85,24 +90,32 @@ class Nodit:
 
             print(response.text)
 
-    def delete_webhooks(self, follower_address):
+    def clear_webhooks(self, follower_address):
         # function to delete all webhooks for an account
-        sub_ids = self.get_webhooks()
-        pass
+        sub_ids = self.get_webhooks(follower_address=follower_address)
+        headers = {"accept": "application/json", "X-API-KEY": api_key}
+        for network in sub_ids:
+            url = self._get_api_url(
+                network=network,
+                action="delete_webhook",
+                subscription_id=sub_ids[network],
+            )
+            response = requests.delete(url, headers=headers)
+        return True
 
     def get_webhooks(self, follower_address: str) -> list:
         """
         returns a list of subscriptionIds for webhooks that is registered to listed to the followings of a certain wallet
         """
         headers = {"accept": "application/json", "X-API-KEY": api_key}
-        webhooks = []
+        webhooks = {}
         for network in self.networks:
             url = self._get_api_url(network=network, action="webhook")
             response = requests.get(url, headers=headers)
             network_webhooks = json.loads(response.text)["items"]
             for webhook in network_webhooks:
                 if webhook["description"] == follower_address:
-                    webhooks.append(webhook["subscriptionId"])
+                    webhooks[network] = webhook["subscriptionId"]
         return webhooks
 
 
@@ -114,5 +127,8 @@ n = Nodit(api_key=api_key)
 #     addresses=["0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"],
 # )
 # w = n.get_webhooks(follower_address="0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb")
-w = n.get_webhooks(follower_address="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")
-print(w)
+# w = n.get_webhooks(follower_address="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")
+# print(w)
+
+
+# n.clear_webhooks(follower_address="0x7e0d5d54ad596c9ab6cfad4c6a9ae5d6f4651aeb")

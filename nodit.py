@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
-import json
 import os
+import json
 import requests
 from dotenv import load_dotenv
+from datetime import datetime, timedelta
 
 load_dotenv()
 api_key = os.environ.get("NODIT")

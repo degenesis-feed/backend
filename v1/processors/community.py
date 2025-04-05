@@ -4,9 +4,14 @@ class Community:
         self.roi = 0
         self.name = name
         self.description = description
+        self.followers = []
 
     def add_profile(self, wallet: str):
         pass
 
     def remove_profile(self, wallet: str):
         pass
+
+def get_community(name: str) -> Community:
+    # con = get_connection()
+    pass

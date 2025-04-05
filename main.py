@@ -112,9 +112,9 @@ def sign_up(wallet: str, description: str):
 
 
 @app.post("/v1/follow")
-def follow(follower: str, who_to_follow: str):
+def follow(follower: str, who_to_follow: str, ):
     follower_profile = profile_of(follower)
-    res = follower_profile.follow(who_to_follow)
+    res = follower_profile.follow_profile(who_to_follow)
     if isinstance(res, FeedMeError):
         raise res
     else:
@@ -124,7 +124,7 @@ def follow(follower: str, who_to_follow: str):
 @app.post("/v1/unfollow")
 def unfollow(unfollower: str, who_to_unfollow: str):
     unfollower_profile = profile_of(unfollower)
-    res = unfollower_profile.unfollow(who_to_unfollow)
+    res = unfollower_profile.unfollow_profile(who_to_unfollow)
     if isinstance(res, FeedMeError):
         raise res
     else:

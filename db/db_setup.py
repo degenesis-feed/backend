@@ -44,7 +44,8 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS transactions(
             following_id SERIAL PRIMARY KEY,
             from_add VARCHAR(255),
-            to_add VARCHAR(255)
+            to_add VARCHAR(255),
+            input TEXT
         );
     """
     create_profiles_table = """
@@ -72,14 +73,14 @@ def create_tables():
 
     with con:
         cursor = con.cursor()
-        cursor.execute(drop_following_table)
-        con.commit()
-        cursor.execute(create_following_table)
-        con.commit()
-        cursor.execute(create_profiles_table)
-        con.commit()
-        cursor.execute(create_abi_table)
-        con.commit()
+        # cursor.execute(drop_following_table)
+        # con.commit()
+        # cursor.execute(create_following_table)
+        # con.commit()
+        # cursor.execute(create_profiles_table)
+        # con.commit()
+        # cursor.execute(create_abi_table)
+        # con.commit()
         cursor.close()
 
 

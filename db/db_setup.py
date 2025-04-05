@@ -38,12 +38,23 @@ def create_tables():
             user_address VARCHAR(255),
             following_address VARCHAR(255)
         );
+    """
+
+    create_transactions_table = """
         CREATE TABLE IF NOT EXISTS transactions(
             following_id SERIAL PRIMARY KEY,
             from_add VARCHAR(255),
             to_add VARCHAR(255)
         );
     """
+    create_profiles_table = """
+        CREATE TABLE IF NOT EXISTS profiles(
+            profile_id SERIAL PRIMARY KEY,
+            address VARCHAR(255),
+            description TEXT
+        );
+    """
+
     create_description_table = """
         CREATE TABLE IF NOT EXISTS descriptions(
             description_id SERIAL PRIMARY KEY,
@@ -55,7 +66,9 @@ def create_tables():
         cursor = con.cursor()
         # cursor.execute(drop_following_table)
         # con.commit()
-        cursor.execute(create_following_table)
+        # cursor.execute(create_following_table)
+        # con.commit()
+        cursor.execute(create_profiles_table)
         con.commit()
         cursor.close()
 

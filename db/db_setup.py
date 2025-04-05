@@ -56,7 +56,7 @@ def create_tables():
             input TEXT,
             function TEXT,
             raw_values TEXT,
-            timestamp VARCHAR(255)
+            timestamp BIGINT
         );
     """
     create_profiles_table = """

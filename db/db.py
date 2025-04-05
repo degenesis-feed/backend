@@ -1,10 +1,10 @@
-import sqlite3
+# import sqlite3
 from db.db_setup import get_connection
 
 
 def get_followings(con, address: str):
     query = """
-        SELECT following_address FROM followings WHERE user_address = ?;
+        SELECT following_address FROM followings WHERE user_address = %s;
     """
     with con:
         cursor = con.cursor()
@@ -18,8 +18,9 @@ def get_followings(con, address: str):
 
 def get_followers(con, address: str):
     query = """
-        SELECT user_address FROM followings WHERE following_address = ?;
+        SELECT user_address FROM followings WHERE following_address = %s;
     """
+    # response = con.table("followings").select("user_address").execute()
     with con:
         cursor = con.cursor()
         cursor.execute(query, (address,))
@@ -28,12 +29,13 @@ def get_followers(con, address: str):
         for result in results:
             clean_results.append(result[0])
         return clean_results
+    # return response
 
 
 def add_following(con, user_address: str, following_address: str):
     query = """
         INSERT INTO followings(user_address, following_address) VALUES
-        (?, ?);
+        (%s, %s);
     """
     with con:
         cursor = con.cursor()

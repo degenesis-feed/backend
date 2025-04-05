@@ -48,21 +48,27 @@ class Profile:
         con = get_connection()
         add_following(con, self.address, profile.address)
 
+        # FUCKING SUCCESS 😎
         return FeedMeStatus.SUCCESS.create(f"Succeeded to follow {profile.address}")
 
+    # Unfollow function for a wallet
     def unfollow(self, who_to_unfollow: str) -> FeedMeStatus:
+        # Fetch the profile of who the user wishes to unfollow
         profile = profile_of(who_to_unfollow)
 
+        # Remove user from this profiles followers
         if self.address in profile.followers:
             profile.followers.remove(self.address)
         else:
             return FeedMeStatus.ERROR.create(f"You are not even following {profile.address}")
 
+        # Remove the profile from the users following list
         if profile.address in self.following:
             self.following.remove(profile.address)
         else:
             return FeedMeStatus.ERROR.create(f"{profile.address} doesn't have you as a follower, contact admin")
 
+        # FUCKING SUCCESS 😎
         return FeedMeStatus.SUCCESS.create(f"Succeeded to unfollow {profile.address}")
 
     def get_actions(self):

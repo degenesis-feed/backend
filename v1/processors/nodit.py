@@ -51,11 +51,13 @@ class Nodit:
             "X-API-KEY": self.api_key,
         }
         transactions = []
-        if not from_date or not to_date:
+        if not to_date:
             current_time = datetime.now()
             to_date = current_time.isoformat()
+        if not from_date:
             thirty_days_before = current_time - timedelta(days=30)
             from_date = thirty_days_before.isoformat()
+
         for network in self.networks:
             url = self._get_api_url(network=network, action="historical_transfers")
             payload = {

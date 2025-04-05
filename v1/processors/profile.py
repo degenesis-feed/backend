@@ -1,13 +1,23 @@
+from datetime import datetime
 from v1.processors.nodit import Nodit
 from db.db_setup import get_connection
 from v1.utils.feedme_status import FeedMeStatus
 from v1.processors.community import get_community
 from v1.processors.web3wrapper import Web3wrapper
 from v1.processors.curvegrid import make_contract_instance
-from db.db import get_followers, get_followings, add_following, add_description
+from db.db import (
+    get_followers,
+    get_followings,
+    add_following,
+    add_description,
+    add_tx,
+    get_tx_sender,
+    get_last_tx_timestamp_for_sender,
+)
 
 nodit = Nodit()
 w3w = Web3wrapper()
+
 
 class Profile:
     def __init__(self, address: str, followers: list = [], followings: list = []):
@@ -153,14 +163,34 @@ class Profile:
 
     def fill_actions(self) -> FeedMeStatus:
         for addy in self.following:
-            # Also, should we have some caching here based on timestamp? Like fetching last timestamp of last tx that is potentially 
+            # Also, should we have some caching here based on timestamp? Like fetching last timestamp of last tx that is potentially
             # in the db, and then utelize this in the get_historical to save time?
-            txs_rawish = nodit.get_historical(address=addy)
+            con = get_connection()
+            last_timestamp = get_last_tx_timestamp_for_sender(con, from_add=addy)
+            if last_timestamp:
+                last_timestamp = datetime.utcfromtimestamp(last_timestamp).isoformat()
+            txs_rawish = nodit.get_historical(address=addy, from_date=last_timestamp)
             for raw_tx in txs_rawish:
                 contract_abi = make_contract_instance(raw_tx["to"])
-                decoded_tx = w3w.parse_input(abi=contract_abi, encoded_input=raw_tx["input"], contract_address=raw_tx["to"])
+                decoded_tx = w3w.parse_input(
+                    abi=contract_abi,
+                    encoded_input=raw_tx["input"],
+                    contract_address=raw_tx["to"],
+                )
+                add_tx(
+                    con,
+                    tx_hash=raw_tx["transactionHash"],
+                    from_add=addy,
+                    to_add=raw_tx["to"],
+                    input=raw_tx["input"],
+                    function=decoded_tx["function_name"],
+                    raw_values=decoded_tx["raw_values"],
+                    timestamp=raw_tx["timestamp"],
+                )
+
                 # Fill in here with database stuff to enter the decoded data for each tx
                 # Suggesting maybe hash -> method name -> method arguments, as a dynamic typed array
+
 
 def profile_of(address: str) -> Profile:
     con = get_connection()

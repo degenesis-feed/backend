@@ -62,13 +62,23 @@ def create_tables():
         );
     """
 
+    create_abi_table = """
+        CREATE TABLE IF NOT EXISTS abis(
+            abi_id SERIAL PRIMARY KEY,
+            contract_address VARCHAR(255),
+            abi TEXT
+        );
+    """
+
     with con:
         cursor = con.cursor()
-        # cursor.execute(drop_following_table)
-        # con.commit()
-        # cursor.execute(create_following_table)
-        # con.commit()
+        cursor.execute(drop_following_table)
+        con.commit()
+        cursor.execute(create_following_table)
+        con.commit()
         cursor.execute(create_profiles_table)
+        con.commit()
+        cursor.execute(create_abi_table)
         con.commit()
         cursor.close()
 

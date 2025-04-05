@@ -71,7 +71,7 @@ def get_feed(wallet: str):
 
 
 @app.get("/v2/feed/{wallet}")
-def get_feed(wallet: str):
+def get_feed_v2(wallet: str):
     addresses = get_following(wallet)
     transactions = []
     for address in addresses:

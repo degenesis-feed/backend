@@ -1,8 +1,13 @@
+from v1.processors.nodit import Nodit
+from db.db_setup import get_connection
 from v1.utils.feedme_status import FeedMeStatus
 from v1.processors.community import get_community
+from v1.processors.web3wrapper import Web3wrapper
+from v1.processors.curvegrid import make_contract_instance
 from db.db import get_followers, get_followings, add_following, add_description
-from db.db_setup import get_connection
 
+nodit = Nodit()
+w3w = Web3wrapper()
 
 class Profile:
     def __init__(self, address: str, followers: list = [], followings: list = []):
@@ -146,6 +151,16 @@ class Profile:
     def get_actions(self) -> FeedMeStatus:
         return FeedMeStatus.SUCCESS.create(f"Actions of {self.address}", self.actions)
 
+    def fill_actions(self) -> FeedMeStatus:
+        for addy in self.following:
+            # Also, should we have some caching here based on timestamp? Like fetching last timestamp of last tx that is potentially 
+            # in the db, and then utelize this in the get_historical to save time?
+            txs_rawish = nodit.get_historical(address=addy)
+            for raw_tx in txs_rawish:
+                contract_abi = make_contract_instance(raw_tx["to"])
+                w3w.parse_input(abi=contract_abi, encoded_input=raw_tx["input"], contract_address=raw_tx["to"])
+                # Fill in here with database stuff to enter the decoded data for each tx
+                # Suggesting maybe hash -> method name -> method arguments, as a dynamic typed array
 
 def profile_of(address: str) -> Profile:
     con = get_connection()

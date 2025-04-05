@@ -53,7 +53,6 @@ def ping():
 
 @app.get("/v1/feed/{wallet}")
 def get_feed(wallet: str):
-    profile = profile_of(wallet)
     addresses = get_following(wallet)
     transactions = []
     for address in addresses:

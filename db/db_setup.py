@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 import psycopg2
 
-load_dotenv(override=True)
+load_dotenv()
 
 SERVER = os.getenv("PGHOST")
 DATABASE_NAME = os.getenv("PGDATABASE")

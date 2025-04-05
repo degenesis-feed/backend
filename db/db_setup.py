@@ -22,12 +22,19 @@ def get_connection():
     )
 
 
+def drop_table(con, table_name: str):
+    drop_query = f"""
+        DROP TABLE IF EXISTS {table_name};
+    """
+    with con:
+        cursor = con.cursor()
+        cursor.execute(drop_query)
+        con.commit()
+        cursor.close()
+
+
 def create_tables():
     con = get_connection()
-
-    drop_following_table = """
-        DROP TABLE IF EXISTS followings;
-    """
 
     # DROP TABLE IF EXISTS comments;
     # DROP TABLE IF EXISTS reactions;
@@ -43,9 +50,12 @@ def create_tables():
     create_transactions_table = """
         CREATE TABLE IF NOT EXISTS transactions(
             following_id SERIAL PRIMARY KEY,
+            tx_hash VARCHAR(255),
             from_add VARCHAR(255),
             to_add VARCHAR(255),
-            input TEXT
+            input TEXT,
+            function TEXT,
+            raw_values TEXT
         );
     """
     create_profiles_table = """
@@ -80,6 +90,8 @@ def create_tables():
         # cursor.execute(create_profiles_table)
         # con.commit()
         # cursor.execute(create_abi_table)
+        # con.commit()
+        # cursor.execute(create_transactions_table)
         # con.commit()
         cursor.close()
 

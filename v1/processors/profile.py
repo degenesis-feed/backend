@@ -1,4 +1,5 @@
 from db import get_connection, get_followers, get_followings, add_following
+from v1.utils.feedme_status import FeedMeStatus
 
 
 class Profile:
@@ -27,7 +28,7 @@ class Profile:
         self.following = []
 
     # Follow function for a profile
-    def follow(self, who_to_follow: str) -> bool:
+    def follow(self, who_to_follow: str) -> FeedMeStatus:
         # Fetch the profile object of who to follow
         profile = profile_of(who_to_follow)
 
@@ -35,34 +36,34 @@ class Profile:
         if self.address not in profile.followers:
             profile.followers.append(self.address)
         else:
-            return False
+            return FeedMeStatus.ERROR.create(f"You already follow {profile.address}")
 
         # Append the other user to profiles the following user follows
         if profile.address not in self.following:
             self.following.append(profile.address)
         else:
-            return False
+            return FeedMeStatus.ERROR.create(f"{profile.address} already have you in its followers, contact admin")
 
         # Update database
         con = get_connection()
         add_following(con, self.address, profile.address)
 
-        return True
+        return FeedMeStatus.SUCCESS.create(f"Succeeded to follow {profile.address}")
 
-    def unfollow(self, who_to_unfollow: str) -> bool:
+    def unfollow(self, who_to_unfollow: str) -> FeedMeStatus:
         profile = profile_of(who_to_unfollow)
 
         if self.address in profile.followers:
             profile.followers.remove(self.address)
         else:
-            return False
+            return FeedMeStatus.ERROR.create(f"You are not even following {profile.address}")
 
         if profile.address in self.following:
             self.following.remove(profile.address)
         else:
-            return False
+            return FeedMeStatus.ERROR.create(f"{profile.address} doesn't have you as a follower, contact admin")
 
-        return True
+        return FeedMeStatus.SUCCESS.create(f"Succeeded to unfollow {profile.address}")
 
     def get_actions(self):
         pass

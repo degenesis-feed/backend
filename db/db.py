@@ -94,15 +94,23 @@ def add_abi(con, contract_address, abi):
         cursor.execute(query, (contract_address, abi))
 
 
-def add_tx(con, address: str, description: str):
+def add_tx(
+    con,
+    tx_hash: str,
+    from_add: str,
+    to_add: str,
+    input: str,
+    function: str,
+    raw_values: str,
+):
     query = """
-        INSERT INTO profiles(address, description) VALUES
-        (%s, %s);
+        INSERT INTO transactions(tx_hash, from_add, to_add, input, function, raw_values) VALUES
+        (%s, %s, %s, %s, %s, %s);
     """
     print("adding into profiles")
     with con:
         cursor = con.cursor()
-        cursor.execute(query, (address, description))
+        cursor.execute(query, (tx_hash, from_add, to_add, input, function, raw_values))
     pass
 
     #    following_id SERIAL PRIMARY KEY,

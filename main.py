@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from v1.utils.entity_lookup import EntityLookup
 from v1.processors.profile import Profile, profile_of
 from v1.utils.feedme_status import Error as FeedMeError
+from v1.processors.curvegrid import make_contract_instance
 
 
 #     ___    ____  ____
@@ -117,10 +118,12 @@ def follow(follower: str, who_to_follow: str, profile_or_wallet: str):
 def unfollow(unfollower: str, who_to_unfollow: str, profile_or_wallet: str):
     unfollow_entity = EntityLookup.from_string(profile_or_wallet)
     unfollower_profile = profile_of(unfollower)
+
     if isinstance(unfollow_entity, EntityLookup.PROFILE):
         res = unfollower_profile.follow_profile(who_to_unfollow)
     elif isinstance(unfollow_entity, EntityLookup.COMMUNITY):
         res = unfollower_profile.follow_community(who_to_unfollow)
+
     if isinstance(res, FeedMeError):
         raise res
     else:
@@ -141,8 +144,13 @@ def unfollow(unfollower: str, who_to_unfollow: str, profile_or_wallet: str):
 
 # Curvegrid
 @app.post("/v1/addContract")
-def add_contract():
-    pass
+def add_contract(address: str):
+    res = make_contract_instance(address)
+
+    if isinstance(res, FeedMeError):
+        raise res
+    else:
+        return res
 
 
 # Curvegrid

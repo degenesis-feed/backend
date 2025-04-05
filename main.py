@@ -111,9 +111,9 @@ def follow(follower: str, who_to_follow: str, profile_or_wallet: str):
     follow_entity = EntityLookup.from_string(profile_or_wallet)
 
     follower_profile = profile_of(follower)
-    if isinstance(follow_entity, EntityLookup.PROFILE):
+    if follow_entity == EntityLookup.PROFILE:
         res = follower_profile.follow_profile(who_to_follow)
-    elif isinstance(follow_entity, EntityLookup.COMMUNITY):
+    elif follow_entity == EntityLookup.COMMUNITY:
         res = follower_profile.follow_community(who_to_follow)
 
     if isinstance(res, FeedMeError):
@@ -127,9 +127,9 @@ def unfollow(unfollower: str, who_to_unfollow: str, profile_or_wallet: str):
     unfollow_entity = EntityLookup.from_string(profile_or_wallet)
     unfollower_profile = profile_of(unfollower)
 
-    if isinstance(unfollow_entity, EntityLookup.PROFILE):
+    if unfollow_entity == EntityLookup.PROFILE:
         res = unfollower_profile.follow_profile(who_to_unfollow)
-    elif isinstance(unfollow_entity, EntityLookup.COMMUNITY):
+    elif unfollow_entity == EntityLookup.COMMUNITY:
         res = unfollower_profile.follow_community(who_to_unfollow)
 
     if isinstance(res, FeedMeError):

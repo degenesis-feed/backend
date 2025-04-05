@@ -1,5 +1,5 @@
 <h4 align="center">
-  <a href="https://sloths-warsaw.vercel.app/">Website</a> |
+  <a href="https://feedme-backend.vercel.app/docs">Website</a> |
   <a href="https://github.com/degenesis-feed/backend">Backend Repo</a> |
   <a href="https://github.com/degenesis-feed/frontend">Frontend Repo</a>
   <p align="center">
@@ -27,11 +27,11 @@ Communities are created using Self Protocol, and can be categorized by anything 
 
 ## Links
 
-- [Vercel](https://sloths-warsaw.vercel.app/)
+- [Vercel](https://feedme-backend.vercel.app/docs)
 - [Github](https://github.com/degenesis-feed)
 
 ## Team
 
 - [0xjsi.eth](https://x.com/0xjsieth)
 - [Akhil](https://x.com/akhilnanavati)
-- [Lasse](https://x.com/VitalikButerin)
+- [Lasse](https://github.com/larsyngvelundin/)

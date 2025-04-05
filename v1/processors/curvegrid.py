@@ -11,7 +11,7 @@ CHAIN = "base"
 
 def make_contract_instance(address: str) -> FeedMeStatus:
     query = {"include": "contractLookup"}
-    final_url = f"https://{CGURL}/api/v0/chains/{CHAIN}/addresses/{address}"
+    final_url = f"{CGURL}api/v0/chains/{CHAIN}/addresses/{address}"
 
     header = {"Authorization": f"Bearer {CGJWT}"}
 

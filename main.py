@@ -2,6 +2,7 @@ import os
 from fastapi import FastAPI, Request
 from db.db_setup import create_tables
 from fastapi.responses import JSONResponse
+from v1.utils.entity_lookup import EntityLookup
 from v1.processors.profile import Profile, profile_of
 from v1.utils.feedme_status import Error as FeedMeError
 
@@ -112,9 +113,15 @@ def sign_up(wallet: str, description: str):
 
 
 @app.post("/v1/follow")
-def follow(follower: str, who_to_follow: str, ):
+def follow(follower: str, who_to_follow: str, profile_or_wallet: str):
+    follow_entity = EntityLookup.from_string(profile_or_wallet)
+
     follower_profile = profile_of(follower)
-    res = follower_profile.follow_profile(who_to_follow)
+    if isinstance(follow_entity, EntityLookup.PROFILE):
+        res = follower_profile.follow_profile(who_to_follow)
+    elif isinstance(follow_entity, EntityLookup.COMMUNITY):
+        res = follower_profile.follow_community(who_to_follow)
+
     if isinstance(res, FeedMeError):
         raise res
     else:
@@ -122,9 +129,13 @@ def follow(follower: str, who_to_follow: str, ):
 
 
 @app.post("/v1/unfollow")
-def unfollow(unfollower: str, who_to_unfollow: str):
+def unfollow(unfollower: str, who_to_unfollow: str, profile_or_wallet: str):
+    unfollow_entity = EntityLookup.from_string(profile_or_wallet)
     unfollower_profile = profile_of(unfollower)
-    res = unfollower_profile.unfollow_profile(who_to_unfollow)
+    if isinstance(unfollow_entity, EntityLookup.PROFILE):
+        res = unfollower_profile.follow_profile(who_to_unfollow)
+    elif isinstance(unfollow_entity, EntityLookup.COMMUNITY):
+        res = unfollower_profile.follow_community(who_to_unfollow)
     if isinstance(res, FeedMeError):
         raise res
     else:

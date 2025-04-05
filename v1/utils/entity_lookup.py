@@ -1,7 +1,7 @@
 from enum import Enum
 from v1.utils.feedme_status import FeedMeStatus
 
-class ProfileOrCommunity(Enum):
+class EntityLookup(Enum):
     PROFILE = "profile"
     COMMUNITY = "community"
 

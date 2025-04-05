@@ -1,6 +1,7 @@
 from v1.utils.feedme_status import FeedMeStatus
 from v1.processors.community import get_community
 from db.db import get_followers, get_followings, add_following
+from db.db_setup import get_connection
 
 
 class Profile:
@@ -35,7 +36,9 @@ class Profile:
         # Create an empty array for communities that this user follows
         self.community_followings = []
 
-        return FeedMeStatus.SUCCESS.create(f"Managed to sign up a new profile for {self.address}")
+        return FeedMeStatus.SUCCESS.create(
+            f"Managed to sign up a new profile for {self.address}"
+        )
 
     # Follow function for a profile
     def follow_profile(self, who_to_follow: str) -> FeedMeStatus:
@@ -52,14 +55,18 @@ class Profile:
         if profile.address not in self.following:
             self.following.append(profile.address)
         else:
-            return FeedMeStatus.ERROR.create(f"{profile.address} already have you in its followers, contact admin")
+            return FeedMeStatus.ERROR.create(
+                f"{profile.address} already have you in its followers, contact admin"
+            )
 
         # Update database
         con = get_connection()
         add_following(con, self.address, profile.address)
 
         # FUCKING SUCCESS 😎
-        return FeedMeStatus.SUCCESS.create(f"Succeeded to follow profile: {profile.address}")
+        return FeedMeStatus.SUCCESS.create(
+            f"Succeeded to follow profile: {profile.address}"
+        )
 
     # Unfollow function for a wallet
     def unfollow_profile(self, who_to_unfollow: str) -> FeedMeStatus:
@@ -70,16 +77,22 @@ class Profile:
         if self.address in profile.followers:
             profile.followers.remove(self.address)
         else:
-            return FeedMeStatus.ERROR.create(f"You are not even following {profile.address}")
+            return FeedMeStatus.ERROR.create(
+                f"You are not even following {profile.address}"
+            )
 
         # Remove the profile from the users following list
         if profile.address in self.following:
             self.following.remove(profile.address)
         else:
-            return FeedMeStatus.ERROR.create(f"{profile.address} doesn't have you as a follower, contact admin")
+            return FeedMeStatus.ERROR.create(
+                f"{profile.address} doesn't have you as a follower, contact admin"
+            )
 
         # FUCKING SUCCESS 😎
-        return FeedMeStatus.SUCCESS.create(f"Succeeded to unfollow profile: {profile.address}")
+        return FeedMeStatus.SUCCESS.create(
+            f"Succeeded to unfollow profile: {profile.address}"
+        )
 
     def follow_community(self, name_of_community: str) -> FeedMeStatus:
         community = get_community(name_of_community)
@@ -92,10 +105,14 @@ class Profile:
         if self.address not in community.followers:
             community.followers.append(self.address)
         else:
-            return FeedMeStatus.ERROR.create(f"{community.name} already have you as a follower, please contact admin")
+            return FeedMeStatus.ERROR.create(
+                f"{community.name} already have you as a follower, please contact admin"
+            )
 
         # FUCKING SUCCESS 😎
-        return FeedMeStatus.SUCCESS.create(f"Succeeded to follow community: {community}")
+        return FeedMeStatus.SUCCESS.create(
+            f"Succeeded to follow community: {community}"
+        )
 
     def unfollow_community(self, name_of_community: str) -> FeedMeStatus:
         community = get_community(name_of_community)
@@ -108,11 +125,14 @@ class Profile:
         if self.address in community.followers:
             community.followers.append(self.address)
         else:
-            return FeedMeStatus.ERROR.create(f"{community.name} doesn't have you as a follower, please contact admin")
+            return FeedMeStatus.ERROR.create(
+                f"{community.name} doesn't have you as a follower, please contact admin"
+            )
 
         # FUCKING SUCCESS 😎
-        return FeedMeStatus.SUCCESS.create(f"Succeeded to unfollow community: {community}")
-
+        return FeedMeStatus.SUCCESS.create(
+            f"Succeeded to unfollow community: {community}"
+        )
 
     def get_actions(self):
         pass

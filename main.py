@@ -1,11 +1,22 @@
 import json
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from v1.processors.profile import Profile, profile_of
-from v1.utils.feedme_status import FeedMeStatus
+from v1.utils.feedme_status import FeedMeStatus, Error as FeedMeError
 
 app = FastAPI()
 
+@app.exception_handler(FeedMeError)
+async def custom_error_handler(request: Request, exc: FeedMeError):
+    exc.log()
+    return JSONResponse(
+        status_code=400,
+        content={
+            "error": exc.message,
+            "details": exc.value
+        }
+    )
 
 @app.get("/v1/ping")
 def ping():
@@ -67,18 +78,30 @@ def get_profile(wallet: str) -> dict:
 # /_/  |_\____/ /_/ /___/\____/_/ |_//____/  
 
 @app.post("/v1/signUp")
-def sign_up(wallet: str, description: str) -> FeedMeStatus:
-    return Profile(wallet).new(description)
+def sign_up(wallet: str, description: str):
+    res = Profile(wallet).new(description)
+    if isinstance(res, FeedMeError):
+        raise res
+    else:
+        return res
 
 @app.post("/v1/follow")
-def follow(follower: str, who_to_follow: str) -> FeedMeStatus:
+def follow(follower: str, who_to_follow: str):
     follower_profile = profile_of(follower)
-    return follower_profile.follow(who_to_follow)
+    res = follower_profile.follow(who_to_follow)
+    if isinstance(res, FeedMeError):
+        raise res
+    else:
+        return res
 
 @app.post("/v1/unfollow")
-def unfollow(unfollower: str, who_to_unfollow: str) -> FeedMeStatus:
+def unfollow(unfollower: str, who_to_unfollow: str):
     unfollower_profile = profile_of(unfollower)
-    return unfollower_profile.unfollow(who_to_unfollow)
+    res = unfollower_profile.unfollow(who_to_unfollow)
+    if isinstance(res, FeedMeError):
+        raise res
+    else:
+        return res
 
 #    __________  _   ____________  ___   ____________
 #   / ____/ __ \/ | / /_  __/ __ \/   | / ____/_  __/

@@ -26,7 +26,8 @@ class Nodit:
     ) -> str:
         match action:
             case "historical_transfers":
-                url = f"https://web3.nodit.io/v1/{network}/mainnet/token/getTokenTransfersByAccount"
+                url = "https://web3.nodit.io/v1/base/mainnet/blockchain/getTransactionsByAccount"
+                # url = f"https://web3.nodit.io/v1/{network}/mainnet/token/getTokenTransfersByAccount"
                 return url
             case "webhook":
                 url = f"https://web3.nodit.io/v1/{network}/mainnet/webhooks"
@@ -63,6 +64,7 @@ class Nodit:
                 "toDate": to_date,
                 "withCount": False,
                 "withZeroValue": True,
+                "relation": "from",
             }
             try:
                 response = requests.post(url, json=payload, headers=headers)

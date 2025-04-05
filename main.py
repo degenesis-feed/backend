@@ -59,7 +59,6 @@ def get_feed(wallet: str):
         for item in items:
             transactions.append(item)
     return transactions
-    pass
 
 
 # Nodit webhook function
@@ -211,6 +210,12 @@ class ConnectionManager:
 
 
 manager = ConnectionManager()
+
+#  _       ____________ _____ ____  ________ __ ____________
+# | |     / / ____/ __ ) ___// __ \/ ____/ //_// ____/_  __/
+# | | /| / / __/ / __  \__ \/ / / / /   / ,<  / __/   / /   
+# | |/ |/ / /___/ /_/ /__/ / /_/ / /___/ /| |/ /___  / /    
+# |__/|__/_____/_____/____/\____/\____/_/ |_/_____/ /_/     
 
 
 @app.websocket("/ws/{wallet}")

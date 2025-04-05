@@ -28,7 +28,7 @@ class Profile:
         self.followers = followers
         self.following = followings
         self.community_followings = []
-        self.actions = []
+        self.actions = self.get_actions()
 
     # Function for creating a new profile
     def new(self, description: str) -> FeedMeStatus:
@@ -159,6 +159,10 @@ class Profile:
         )
 
     def get_actions(self) -> FeedMeStatus:
+        ## reconsider where to fill actions
+        self.fill_actions()
+        con = get_connection()
+        self.actions = get_tx_sender(con, self.address)
         return FeedMeStatus.SUCCESS.create(f"Actions of {self.address}", self.actions)
 
     def fill_actions(self) -> FeedMeStatus:
@@ -177,6 +181,7 @@ class Profile:
                     encoded_input=raw_tx["input"],
                     contract_address=raw_tx["to"],
                 )
+                print("trying to add tx")
                 add_tx(
                     con,
                     tx_hash=raw_tx["transactionHash"],

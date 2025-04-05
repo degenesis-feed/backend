@@ -17,5 +17,5 @@ def make_contract_instance(address: str) -> FeedMeStatus:
 
     res = requests.get(final_url, params=query, headers=header)
 
-    return FeedMeStatus.SUCCESS.create("Address info: ", res.json)
+    return FeedMeStatus.SUCCESS.create("Address info: ", res.text)
 

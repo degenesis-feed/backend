@@ -153,6 +153,8 @@ class Profile:
 
     def fill_actions(self) -> FeedMeStatus:
         for addy in self.following:
+            # Also, should we have some caching here based on timestamp? Like fetching last timestamp of last tx that is potentially 
+            # in the db, and then utelize this in the get_historical to save time?
             txs_rawish = nodit.get_historical(address=addy)
             for raw_tx in txs_rawish:
                 contract_abi = make_contract_instance(raw_tx["to"])

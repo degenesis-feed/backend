@@ -7,7 +7,7 @@
   </p>
 </h4>
 
-🦥 Sloth Shaming is a platform that allows you to create a profile, receive ratings based on your invoices on Request Network, and wether or not you are paying them on time. Late payers will be named and shamed, and responsible payers will be rewarded with good reputation, and as an effect, have provable credibility.
+🍽️ FeedMe is the fun and social platform that helps you keep track of what your frens have been up to on chain as of lately! Get a nice currated list, either by the people you follow, or our suggested for you page, or by specific communities! If you see an interesting transaction you'd like to mimic, then just hit the "Copy Action" - button. 
 
 - 🩻 **SoulBound**: Upon registration users will receive a soulbound token that represents their profile.
 - ⛓️ **Dynamic NFT**: The associated NFT will be dynamically changed throughout your activity history on request network.

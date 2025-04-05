@@ -73,12 +73,15 @@ def get_feed(wallet: str):
 @app.get("/v2/feed/{wallet}")
 def get_feed_v2(wallet: str):
     addresses = get_following(wallet)
+    # print(f"checking these: {addresses}")
     transactions = []
     for address in addresses:
         profile = profile_of(address)
-        items = profile.get_actions()
-        for item in items:
-            transactions.append(item)
+        items = profile.get_actions().value
+        if items:
+            for item in items:
+                # print(item)
+                transactions.append(item)
     return transactions
 
 

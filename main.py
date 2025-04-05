@@ -38,6 +38,12 @@ async def custom_error_handler(request: Request, exc: FeedMeError):
     )
 
 
+@app.get("/")
+def idle():
+    # Health check, easily test that api is live
+    return {"status": "i'm alive"}
+
+
 @app.get("/v1/ping")
 def ping():
     # Health check, easily test that api is live

@@ -85,6 +85,23 @@ def get_feed_v2(wallet: str):
     return transactions
 
 
+@app.get("/v2/cached_transactions/{wallet}")
+def get_historical_transactions(wallet: str):
+    addresses = get_following(wallet)
+    # print(f"checking these: {addresses}")
+    transactions = []
+    for address in addresses:
+        # get_tx_sender()
+        profile = profile_of(address)
+
+        # items = profile.get_actions().value
+        # if items:
+        #     for item in items:
+        #         # print(item)
+        #         transactions.append(item)
+    # return transactions
+
+
 #     ____  ____  ____  ____________    ______   _____   ____________
 #    / __ \/ __ \/ __ \/ ____/  _/ /   / ____/  /  _/ | / / ____/ __ \
 #   / /_/ / /_/ / / / / /_   / // /   / __/     / //  |/ / /_  / / / /

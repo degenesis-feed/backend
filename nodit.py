@@ -6,13 +6,13 @@ from datetime import datetime, timedelta
 
 load_dotenv()
 api_key = os.environ.get("NODIT")
-if not api_key:
-    print("No NODIT API Key set in .env, quitting")
-    quit()
+# if not api_key:
+#     print("No NODIT API Key set in .env, quitting")
+#     quit()
 webhook_url = os.environ.get("WEBHOOK_BASE")
-if not webhook_url:
-    print("No WEBHOOK_BASE set in .env, quitting")
-    quit()
+# if not webhook_url:
+#     print("No WEBHOOK_BASE set in .env, quitting")
+#     quit()
 
 
 class Nodit:

@@ -48,8 +48,8 @@ def create_tables():
 
     with con:
         cursor = con.cursor()
-        cursor.execute(drop_following_table)
-        con.commit()
+        # cursor.execute(drop_following_table)
+        # con.commit()
         cursor.execute(create_following_table)
         con.commit()
         cursor.close()

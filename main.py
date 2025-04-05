@@ -62,7 +62,8 @@ def get_feed(wallet: str):
     addresses = get_following(wallet)
     transactions = []
     for address in addresses:
-        items = nodit.get_historical(address=address)
+        profile = profile_of(address)
+        items = profile.get_actions()
         for item in items:
             transactions.append(item)
     return transactions

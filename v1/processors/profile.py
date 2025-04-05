@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from v1.processors.nodit import Nodit
 from db.db_setup import get_connection
@@ -175,26 +176,27 @@ class Profile:
                 last_timestamp = datetime.utcfromtimestamp(last_timestamp).isoformat()
             txs_rawish = nodit.get_historical(address=addy, from_date=last_timestamp)
             for raw_tx in txs_rawish:
-                contract_abi = make_contract_instance(raw_tx["to"])
-                decoded_tx = w3w.parse_input(
-                    abi=contract_abi,
-                    encoded_input=raw_tx["input"],
-                    contract_address=raw_tx["to"],
-                )
-                print("trying to add tx")
-                add_tx(
-                    con,
-                    tx_hash=raw_tx["transactionHash"],
-                    from_add=addy,
-                    to_add=raw_tx["to"],
-                    input=raw_tx["input"],
-                    function=decoded_tx["function_name"],
-                    raw_values=decoded_tx["raw_values"],
-                    timestamp=raw_tx["timestamp"],
-                )
+                contract_abi = make_contract_instance(raw_tx["to"]).value
+                if contract_abi is not None:
+                    decoded_tx = w3w.parse_input(
+                        abi=json.loads(contract_abi)["result"]["contractLookup"][0]["abi"],
+                        encoded_input=raw_tx["input"],
+                        contract_address=raw_tx["to"],
+                    )
+                    print("trying to add tx")
+                    add_tx(
+                        con,
+                        tx_hash=raw_tx["transactionHash"],
+                        from_add=addy,
+                        to_add=raw_tx["to"],
+                        input=raw_tx["input"],
+                        function=decoded_tx["function_name"],
+                        raw_values=json.dumps(decoded_tx["raw_values"]),
+                        timestamp=raw_tx["timestamp"],
+                    )
 
-                # Fill in here with database stuff to enter the decoded data for each tx
-                # Suggesting maybe hash -> method name -> method arguments, as a dynamic typed array
+                    # Fill in here with database stuff to enter the decoded data for each tx
+                    # Suggesting maybe hash -> method name -> method arguments, as a dynamic typed array
 
 
 def profile_of(address: str) -> Profile:

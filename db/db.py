@@ -117,7 +117,7 @@ def add_tx(
 
 def get_tx_hash(con, tx_hash: str):
     query = """
-        SELECT input, function, raw_values, timestamp FROM transactions WHERE tx_hash = %s;
+        SELECT (input, function, raw_values, timestamp) FROM transactions WHERE tx_hash = %s;
     """
     with con:
         cursor = con.cursor()
@@ -129,7 +129,7 @@ def get_tx_hash(con, tx_hash: str):
 
 def get_tx_sender(con, from_add: str):
     query = """
-        SELECT input, function, raw_values, timestamp FROM transactions WHERE from_add = %s;
+        SELECT (input, function, raw_values, timestamp) FROM transactions WHERE from_add = %s;
     """
     with con:
         cursor = con.cursor()

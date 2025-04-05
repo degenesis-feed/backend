@@ -7,6 +7,8 @@ from v1.processors.profile import Profile, profile_of
 from v1.utils.feedme_status import Error as FeedMeError
 from v1.processors.curvegrid import make_contract_instance
 
+from nodit import Nodit
+
 
 #     ___    ____  ____
 #    /   |  / __ \/  _/
@@ -15,6 +17,7 @@ from v1.processors.curvegrid import make_contract_instance
 # /_/  |_/_/   /___/
 
 app = FastAPI()
+nodit = Nodit()
 
 
 @app.exception_handler(FeedMeError)
@@ -41,6 +44,13 @@ def ping():
 @app.get("/v1/feed/{wallet}")
 def get_feed(wallet: str):
     profile = profile_of(wallet)
+    addresses = get_following(wallet)
+    transactions = []
+    for address in addresses:
+        items = nodit.get_historical(address=address)
+        for item in items:
+            transactions.append(item)
+    return transactions
     pass
 
 

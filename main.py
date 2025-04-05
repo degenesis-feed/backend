@@ -152,8 +152,8 @@ def unfollow(unfollower: str, who_to_unfollow: str, profile_or_wallet: str):
 
 # Curvegrid
 @app.post("/v1/addContract")
-def add_contract(address: str):
-    res = make_contract_instance(address)
+def add_contract(contract_address: str):
+    res = make_contract_instance(contract_address)
 
     if isinstance(res, FeedMeError):
         raise res
@@ -163,7 +163,7 @@ def add_contract(address: str):
 
 # Curvegrid
 @app.post("/v1/interactWithContract")
-def interact_with_contract():
+def interact_with_contract(wallet: str, contract_address: str, method: str, args: list[str]):
     pass
 
 

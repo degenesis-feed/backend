@@ -27,19 +27,16 @@ def listen_to_feed():
 @app.get("/v1/following/{wallet}")
 def get_following(wallet: str) -> list[str]:
     return json.dumps(profile_of(wallet).following)
-    pass
 
 
 @app.get("/v1/followers/{wallet}")
 def get_followers(wallet: str) -> list[str]:
     return profile_of(wallet).followers
-    pass
 
 
 @app.get("/v1/profile/{wallet}")
 def get_profile(wallet: str) -> dict:
     return profile_of(wallet)
-    pass
 
 
 @app.post("/v1/signUp")

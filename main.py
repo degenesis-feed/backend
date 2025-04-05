@@ -1,13 +1,15 @@
-from fastapi import FastAPI, Request, WebSocket
+from typing import List
+from v1.processors.nodit import Nodit
+from v1.processors.curvegrid import (
+    make_contract_instance,
+    interact_with_contract_method,
+)
 from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, Request, WebSocket
 from v1.utils.entity_lookup import EntityLookup
+from fastapi.middleware.cors import CORSMiddleware
 from v1.processors.profile import Profile, profile_of
 from v1.utils.feedme_status import Error as FeedMeError
-from v1.processors.curvegrid import make_contract_instance
-from typing import List
-
-from nodit import Nodit
 
 
 #     ___    ____  ____
@@ -59,13 +61,6 @@ def get_feed(wallet: str):
         for item in items:
             transactions.append(item)
     return transactions
-    pass
-
-
-# Nodit webhook function
-@app.post("/v1/feedListen")
-def listen_to_feed():
-    pass
 
 
 #     ____  ____  ____  ____________    ______   _____   ____________
@@ -174,9 +169,14 @@ def add_contract(contract_address: str):
 # Curvegrid
 @app.post("/v1/interactWithContract")
 def interact_with_contract(
-    wallet: str, contract_address: str, method: str, args: list[str]
+    wallet: str, contract_address: str, method: str, args: list[str] | None
 ):
-    pass
+    res = interact_with_contract_method(wallet, contract_address, method, args)
+
+    if isinstance(res, FeedMeError):
+        raise res
+    else:
+        return res
 
 
 #    __________  __  _____  _____  ___   ___________________________
@@ -211,6 +211,12 @@ class ConnectionManager:
 
 
 manager = ConnectionManager()
+
+#  _       ____________ _____ ____  ________ __ ____________
+# | |     / / ____/ __ ) ___// __ \/ ____/ //_// ____/_  __/
+# | | /| / / __/ / __  \__ \/ / / / /   / ,<  / __/   / /
+# | |/ |/ / /___/ /_/ /__/ / /_/ / /___/ /| |/ /___  / /
+# |__/|__/_____/_____/____/\____/\____/_/ |_/_____/ /_/
 
 
 @app.websocket("/ws/{wallet}")

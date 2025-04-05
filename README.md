@@ -16,13 +16,13 @@
 
 ## Bounties 😎
 
-### Nodit - Nodit-Powered Apps on Base
+### 💪 Nodit - Nodit-Powered Apps on Base
 We're using Nodit to query and parse the blockchain for the data we want to serve our users. We're really thankful for the Nodit team for really taking their time and help us with our weird request, even to the extent of finding out clever hacks on their own API. Great yapping in the meanwhile was certainly a plus.
 
-### Curvegrid - Best Overall Use of MultiBaas
+### 🏆 Curvegrid - Best Overall Use of MultiBaas
 Curvegrid is the backbone of our project and thanks to the very versatile API and tooling of MultiBaas, we're able to do seamless copytrading on whatever onchain interaction, as long as the contract is verified. Working with the API was very smooth, and the only issue we ran into was a bit of confusion regarding the chain part of the API url when working with base, which we got help by the Curvegrid team to solve smoothly.
 
-### Self Protocol - Best Self offchain SDK Integration
+### 💻 Self Protocol - Best Self offchain SDK Integration
 Communities are created using Self Protocol, and can be categorized by anything from nationality, age or gender. Implementing the SDK was simple and straightforward, and we where happy to receive great support whenever needed.
 
 ## Links

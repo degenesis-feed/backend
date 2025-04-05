@@ -47,7 +47,15 @@ def get_comments(tx_hash):
     pass
 
 
-def add_description():
+def add_description(con, address: str, description: str):
+    query = """
+        INSERT INTO profiles(address, description) VALUES
+        (%s, %s);
+    """
+    print("adding into profiles")
+    with con:
+        cursor = con.cursor()
+        cursor.execute(query, (address, description))
     pass
 
 

@@ -57,7 +57,20 @@ def ping():
 # /_/   /_____/_____/_____/   /____/_/ /_/___/ /_/
 
 
+##Legacy Working
 @app.get("/v1/feed/{wallet}")
+def get_feed(wallet: str):
+    addresses = get_following(wallet)
+    transactions = []
+    for address in addresses:
+        # profile = profile_of(address)
+        items = nodit.get_historical(address=address)
+        for item in items:
+            transactions.append(item)
+    return transactions
+
+
+@app.get("/v2/feed/{wallet}")
 def get_feed(wallet: str):
     addresses = get_following(wallet)
     transactions = []
@@ -202,7 +215,6 @@ def get_communities(name: str) -> dict:
 # | | /| / / __/ / __  \__ \/ / / / /   / ,<  / __/   / /
 # | |/ |/ / /___/ /_/ /__/ / /_/ / /___/ /| |/ /___  / /
 # |__/|__/_____/_____/____/\____/\____/_/ |_/_____/ /_/
-
 
 
 manager = ConnectionManager()

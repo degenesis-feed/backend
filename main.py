@@ -6,6 +6,7 @@ from v1.processors.curvegrid import (
 from fastapi.responses import JSONResponse
 from fastapi import FastAPI, Request, WebSocket
 from v1.utils.entity_lookup import EntityLookup
+from v1.processors.community import get_community
 from fastapi.middleware.cors import CORSMiddleware
 from v1.processors.profile import Profile, profile_of
 from v1.utils.feedme_status import Error as FeedMeError

@@ -1,4 +1,3 @@
-from typing import List
 from v1.processors.nodit import Nodit
 from v1.processors.curvegrid import (
     make_contract_instance,
@@ -10,7 +9,7 @@ from v1.utils.entity_lookup import EntityLookup
 from fastapi.middleware.cors import CORSMiddleware
 from v1.processors.profile import Profile, profile_of
 from v1.utils.feedme_status import Error as FeedMeError
-
+from v1.utils.connection_manager import ConnectionManager
 
 #     ___    ____  ____
 #    /   |  / __ \/  _/
@@ -202,21 +201,6 @@ def get_communities():
 # | |/ |/ / /___/ /_/ /__/ / /_/ / /___/ /| |/ /___  / /
 # |__/|__/_____/_____/____/\____/\____/_/ |_/_____/ /_/
 
-
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: List[WebSocket] = []
-
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
-
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-
-    async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
 
 
 manager = ConnectionManager()

@@ -54,7 +54,7 @@ def listen_to_feed():
 
 @app.get("/v1/following/{wallet}")
 def get_following(wallet: str) -> list[str]:
-    return json.dumps(profile_of(wallet).following)
+    return profile_of(wallet).following
 
 
 @app.get("/v1/followers/{wallet}")

@@ -55,7 +55,8 @@ def create_tables():
             to_add VARCHAR(255),
             input TEXT,
             function TEXT,
-            raw_values TEXT
+            raw_values TEXT,
+            timestamp VARCHAR(255)
         );
     """
     create_profiles_table = """
@@ -91,8 +92,8 @@ def create_tables():
         # con.commit()
         # cursor.execute(create_abi_table)
         # con.commit()
-        # cursor.execute(create_transactions_table)
-        # con.commit()
+        cursor.execute(create_transactions_table)
+        con.commit()
         cursor.close()
 
 

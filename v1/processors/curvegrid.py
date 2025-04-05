@@ -7,7 +7,7 @@ load_dotenv()
 
 CGURL = os.getenv("CURVEGRID_URL") 
 CGJWT = os.getenv("CURVEGRID_JWT")
-CHAIN = "base"
+CHAIN = "ethereum"
 
 def make_contract_instance(address: str) -> FeedMeStatus:
     query = {"include": "contractLookup"}

@@ -106,6 +106,7 @@ def add_tx(
     raw_values: str,
     timestamp: str,
 ):
+    print("Got here???")
     query = """
         INSERT INTO transactions(tx_hash, from_add, to_add, input, function, raw_values, timestamp) VALUES
         (%s, %s, %s, %s, %s, %s, %s);

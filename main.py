@@ -77,14 +77,12 @@ def get_feed_v2(wallet: str):
     transactions = []
     for address in addresses:
         profile = profile_of(address)
-        try :
-            items = profile.fill_actions().value
-            if items:
-                for item in items:
-                    # print(item)
-                    transactions.append(item)
-        except Exception:
-            pass
+
+        items = profile.fill_actions().value
+        if items is not None:
+            for item in items:
+                print(f"Item found {item}")
+                transactions.append(item)
     return transactions
 
 

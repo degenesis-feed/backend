@@ -161,44 +161,69 @@ class Profile:
 
     def get_actions(self) -> FeedMeStatus:
         ## reconsider where to fill actions
-        self.fill_actions()
         con = get_connection()
         self.actions = get_tx_sender(con, self.address)
+        if not self.actions:
+            self.fill_actions()
+            self.actions = get_tx_sender(con, self.address)
         return FeedMeStatus.SUCCESS.create(f"Actions of {self.address}", self.actions)
 
     def fill_actions(self) -> FeedMeStatus:
+        txs_list = []
         for addy in self.following:
-            # Also, should we have some caching here based on timestamp? Like fetching last timestamp of last tx that is potentially
-            # in the db, and then utelize this in the get_historical to save time?
-            con = get_connection()
-            last_timestamp = get_last_tx_timestamp_for_sender(con, from_add=addy)
-            if last_timestamp:
-                last_timestamp = datetime.utcfromtimestamp(last_timestamp).isoformat()
-            txs_rawish = nodit.get_historical(address=addy, from_date=last_timestamp)
-            for raw_tx in txs_rawish:
-                contract_abi = make_contract_instance(raw_tx["to"]).value
-                if contract_abi is not None:
-                    decoded_tx = w3w.parse_input(
-                        abi=json.loads(contract_abi)["result"]["contractLookup"][0][
-                            "abi"
-                        ],
-                        encoded_input=raw_tx["input"],
-                        contract_address=raw_tx["to"],
-                    )
-                    print("trying to add tx")
-                    add_tx(
-                        con,
-                        tx_hash=raw_tx["transactionHash"],
-                        from_add=addy,
-                        to_add=raw_tx["to"],
-                        input=raw_tx["input"],
-                        function=decoded_tx["function_name"],
-                        raw_values=json.dumps(decoded_tx["raw_values"]),
-                        timestamp=raw_tx["timestamp"],
-                    )
+            try:
+                con = get_connection()
+                last_timestamp = get_last_tx_timestamp_for_sender(con, from_add=addy)
+                if last_timestamp:
+                    last_timestamp = datetime.utcfromtimestamp(last_timestamp).isoformat(                txs_rawish = nodit.get_historical(address=addy, from_date=last_timestamp)
+                
+                for raw_tx in txs_rawish:
+                    try:
+                        if not raw_tx.get("to") or not raw_tx.get("input"):
+                            continue
 
-                    # Fill in here with database stuff to enter the decoded data for each tx
-                    # Suggesting maybe hash -> method name -> method arguments, as a dynamic typed array
+                        contract_abi = make_contract_instance(raw_tx["to"]).value
+                        if contract_abi is None:
+                            continue
+
+                        decoded_tx = w3w.parse_input(
+                            abi=json.loads(contract_abi)["result"]["contractLookup"][0]["abi"],
+                            encoded_input=raw_tx["input"],
+                            contract_address=raw_tx["to"],
+                        )
+
+                        if not isinstance(decoded_tx.get("raw_values"), dict):
+                            continue
+
+                        if "signature" in decoded_tx["raw_values"]:
+                            continue
+
+                        tx_data = {
+                            "tx_hash": raw_tx["transactionHash"],
+                            "from_add": addy,
+                            "to_add": raw_tx["to"],
+                            "input": raw_tx["input"],
+                            "function": decoded_tx["function_name"],
+                            "raw_values": json.dumps(decoded_tx["raw_values"]),
+                            "timestamp": raw_tx["timestamp"],
+                        }
+
+                        add_tx(
+                            con,
+                            **tx_data
+                        )
+                        txs_list.append(tx_data)
+
+                    except Exception as tx_error:
+                        print(f"Error processing transaction: {tx_error}")
+                        continue
+
+            except Exception as addr_error:
+                print(f"Error processing address {addy}: {addr_error}")
+                continue
+
+        return FeedMeStatus.SUCCESS.create("List is: ", txs_list)
+
 
 
 def profile_of(address: str) -> Profile:

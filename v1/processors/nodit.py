@@ -59,7 +59,7 @@ class Nodit:
             from_date = thirty_days_before.isoformat()
         from_date_dt = datetime.fromisoformat(from_date)
         from_date_dt_5 = from_date_dt + timedelta(seconds=5)
-        from_date = from_date_dt_5
+        from_date = from_date_dt_5.isoformat()
         # from_date += timedelta(sec)
         print(f"from date: {from_date}")
 
@@ -81,7 +81,8 @@ class Nodit:
                     if item["input"] != "0x":
                         transactions.append(item)
 
-            except Exception:
+            except Exception as e:
+                print(f"Something went wrong when fetching nodit: {e}")
                 # avoid api limit by just skipping the rest. Needs better fix
                 break
         # print(transactions)

@@ -57,6 +57,11 @@ class Nodit:
         if not from_date:
             thirty_days_before = current_time - timedelta(days=30)
             from_date = thirty_days_before.isoformat()
+        from_date_dt = datetime.fromisoformat(from_date)
+        from_date_dt_5 = from_date_dt + timedelta(seconds=5)
+        from_date = from_date_dt_5
+        # from_date += timedelta(sec)
+        print(f"from date: {from_date}")
 
         for network in self.networks:
             url = self._get_api_url(network=network, action="historical_transfers")

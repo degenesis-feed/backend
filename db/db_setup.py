@@ -1,8 +1,25 @@
-import sqlite3
+# import sqlite3
+from dotenv import load_dotenv
+import os
+import psycopg2
+
+load_dotenv()
+
+SERVER = os.getenv("PGHOST")
+DATABASE_NAME = os.getenv("PGDATABASE")
+USER = os.getenv("PGUSER")
+PASSWORD = os.getenv("PGPASSWORD")
+PORT = os.getenv("PGPORT")
 
 
 def get_connection():
-    return sqlite3.connect("data.db")
+    return psycopg2.connect(
+        dbname=DATABASE_NAME,
+        user=USER,
+        password=PASSWORD,
+        host=SERVER,
+        port=PORT,
+    )
 
 
 def create_tables():
@@ -17,14 +34,14 @@ def create_tables():
 
     create_following_table = """
         CREATE TABLE IF NOT EXISTS followings(
-            following_id INTEGER PRIMARY KEY,
+            following_id SERIAL PRIMARY KEY,
             user_address VARCHAR(255),
             following_address VARCHAR(255)
         );
     """
     create_description_table = """
         CREATE TABLE IF NOT EXISTS descriptions(
-            description_id INTEGER PRIMARY KEY,
+            description_id SERIAL PRIMARY KEY,
             description_text TEXT
         );
     """
